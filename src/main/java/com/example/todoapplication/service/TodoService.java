@@ -1,8 +1,8 @@
 package com.example.todoapplication.service;
 
-import org.springframework.stereotype.Service;
+import com.example.todoapplication.dto.TodoRequestDto;
+import com.example.todoapplication.dto.TodoResponseDto;
 
-@Service
-public class TodoService implements Service {
-
+public interface TodoService {
+    TodoResponseDto saveTodo(TodoRequestDto dto);
 }
