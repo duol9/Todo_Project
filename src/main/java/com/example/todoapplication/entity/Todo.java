@@ -26,6 +26,8 @@ public class Todo {
         this.pw = pw;
         this.title = title;
         this.task = task;
+        this.createDate = LocalDateTime.now();
+        this.editDate = this.createDate;
     }
 
 }
