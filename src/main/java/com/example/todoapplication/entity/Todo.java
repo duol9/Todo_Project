@@ -10,21 +10,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Todo {
 
-    @Setter
     private Long id;
     private String name;
     private String pw;
-    private String title;
     private String task;
     @Setter
     private LocalDateTime createDate;
     @Setter
     private LocalDateTime editDate;
 
-    public Todo(String name, String pw, String title, String task) {
+    public Todo(String name, String pw, String task) {
         this.name = name;
         this.pw = pw;
-        this.title = title;
         this.task = task;
         this.createDate = LocalDateTime.now();
         this.editDate = this.createDate;
