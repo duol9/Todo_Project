@@ -22,7 +22,7 @@ public class TodoResponseDto {
         this.name = todo.getName();
         this.pw = todo.getPw();
         this.task = todo.getTask();
-        //this.createDate = todo.getCreateDate();
-        //this.editDate = todo.getEditDate();
+        this.createDate = todo.getCreateDate();
+        this.editDate = todo.getEditDate();
     }
 }

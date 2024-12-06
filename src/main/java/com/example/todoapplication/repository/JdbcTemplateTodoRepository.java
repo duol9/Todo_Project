@@ -9,8 +9,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +78,14 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
         // jdbcTemplate.query(String sql쿼리, Object[] sql쿼리 ?에 들어갈 값들, RowMapper<T> ResultSet을 매핑해 원하는 객체로 변환);
         return jdbcTemplate.query(queryStringBuilder.toString(), params.toArray(), todoRowMapper());
     }
-    //
+
+    @Override
+    public TodoResponseDto findTodoById(Long id) {
+        // List<T> 형태로 반환해주는 query와 달리 단일 반환
+        return jdbcTemplate.queryForObject("SELECT * FROM todos WHERE id = ?", todoRowMapper(), id );
+    }
+
+    //해당하는 DB의 row를 가져와 객체로 변환
     private RowMapper<TodoResponseDto> todoRowMapper() {
         return (rs, rowNum) -> new TodoResponseDto(
                 rs.getLong("id"),
@@ -90,27 +95,5 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
                 rs.getTimestamp("createDate").toLocalDateTime(),
                 rs.getTimestamp("editDate").toLocalDateTime()
         );
-    }
-
-    @Override
-    public Todo findTodoById(Long id) {
-        // List<T> 형태로 반환해주는 query와 달리 단일 반환
-        return jdbcTemplate.queryForObject("SELECT * FROM todos WHERE id = ?", todoRowMapper2(), id );
-    }
-
-    private RowMapper<Todo> todoRowMapper2() {
-        return new RowMapper<Todo>() {
-            @Override
-            public Todo mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new Todo(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getString("pw"),
-                        rs.getString("task"),
-                        rs.getTimestamp("createDate").toLocalDateTime(),
-                        rs.getTimestamp("editDate").toLocalDateTime()
-                );
-            }
-        };
     }
 }

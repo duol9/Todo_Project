@@ -9,5 +9,5 @@ import java.util.List;
 public interface TodoRespository {
     TodoResponseDto saveTodo(Todo todo);
     List<TodoResponseDto> findAllTodos(String name, LocalDate editDate);
-    Todo findTodoById(Long id);
+    TodoResponseDto findTodoById(Long id);
 }

@@ -42,13 +42,13 @@ public class TodoServiceImpl implements TodoService {
     // 선택 일정 조회
     @Override
     public TodoResponseDto findTodoById(Long id) {
-        Todo todo = todoRepository.findTodoById(id);
+        TodoResponseDto todoResponseDto = todoRepository.findTodoById(id);
 
         // 해당 id의 일정이 없을 경우
-        if(todo == null) {
+        if(todoResponseDto == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exist id = " + id);
         }
 
-        return new TodoResponseDto(todo);
+        return todoResponseDto;
     }
 }
