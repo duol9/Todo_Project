@@ -25,13 +25,10 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoResponseDto saveTodo(TodoRequestDto dto) {
         // 1. 사용자로부터 입력 받은 일정 저장
-        Todo todo = new Todo(dto.getName(), dto.getPw(), dto.getTitle(), dto.getTask());
+        Todo todo = new Todo(dto.getName(), dto.getPw(), dto.getTask());
 
-        // 2. DB에 저장 (Service -> repository, repository -> service)
-        Todo savedTodo = todoRepository.saveTodo(todo);
-
-        // 3.
-        return new TodoResponseDto(savedTodo);
+        // 2. DB에 저장 (Service -> repository)
+        return todoRepository.saveTodo(todo);
     }
 
     // 전체 일정 조회 ( 사용자의 요청에 대한 응답을 해줌(reponse) )
