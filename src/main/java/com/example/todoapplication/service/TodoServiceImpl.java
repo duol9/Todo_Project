@@ -7,6 +7,7 @@ import com.example.todoapplication.repository.TodoRespository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -50,5 +51,26 @@ public class TodoServiceImpl implements TodoService {
         }
 
         return todoResponseDto;
+    }
+
+    // 일정 수정
+    @Transactional
+    @Override
+    public TodoResponseDto updateTodo(Long id, String name, String pw, String task) {
+
+        // 필수값 검증
+        if (name == null && task == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name or task are required values.");
+        }
+
+        // 수정된 row 개수
+        int updateRow = todoRepository.updateTodo(id, name, pw, task);
+
+        // 수정된 일정이 0개라면
+        if(updateRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data has been modified.");
+        }
+
+        return todoRepository.findTodoById(id);
     }
 }

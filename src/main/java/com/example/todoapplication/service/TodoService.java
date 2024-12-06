@@ -11,4 +11,5 @@ public interface TodoService {
     TodoResponseDto saveTodo(TodoRequestDto dto);
     ResponseEntity<List<TodoResponseDto>> findAllTodos(String name, LocalDate editDate);
     TodoResponseDto findTodoById(Long id);
+    TodoResponseDto updateTodo(Long id, String name, String pw, String task);
 }

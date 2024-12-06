@@ -96,4 +96,36 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
                 rs.getTimestamp("editDate").toLocalDateTime()
         );
     }
+
+
+    // 일정 수정 (작성자명, 할 일)
+    @Override
+    public int updateTodo(Long id, String name, String pw, String task) {
+        StringBuilder queryStringBuilder = new StringBuilder("UPDATE todos SET ");
+        List<Object> params = new ArrayList<>(); // ?에 들어갈 parameter 리스트
+
+        // 작성자명, 할일 수정
+        if (name != null && task != null) {
+            queryStringBuilder.append("name = ?, task = ? ");
+            params.add(name);
+            params.add(task);
+
+        // 작성자명만 수정
+        } else if (name != null && task == null) {
+            queryStringBuilder.append("name = ? ");
+            params.add(name);
+
+        // 할 읾만 수정
+        } else if (name == null && task != null) {
+            queryStringBuilder.append("task = ? ");
+            params.add(task);
+        }
+
+        queryStringBuilder.append("WHERE id = ? AND pw = ?");
+        params.add(id);
+        params.add(pw);
+
+
+        return jdbcTemplate.update(queryStringBuilder.toString(), params.toArray());
+    }
 }
