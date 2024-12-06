@@ -45,4 +45,11 @@ public class TodoController {
     public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long id, @RequestBody TodoRequestDto dto) {
         return new ResponseEntity<>(todoService.updateTodo(id, dto.getName(), dto.getPw(), dto.getTask()), HttpStatus.OK);
     }
+
+    // 일정 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TodoResponseDto> deleteTodo(@PathVariable Long id, @RequestBody TodoRequestDto dto) {
+        todoService.deleteTodo(id, dto.getPw());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

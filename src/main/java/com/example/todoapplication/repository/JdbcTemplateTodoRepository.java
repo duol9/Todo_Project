@@ -128,4 +128,9 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
 
         return jdbcTemplate.update(queryStringBuilder.toString(), params.toArray());
     }
+
+    @Override
+    public int deleteTodo(Long id, String pw) {
+        return jdbcTemplate.update("DELETE FROM todos WHERE id = ? AND pw = ?", id, pw);
+    }
 }

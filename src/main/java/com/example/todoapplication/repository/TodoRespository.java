@@ -11,4 +11,5 @@ public interface TodoRespository {
     List<TodoResponseDto> findAllTodos(String name, LocalDate editDate);
     TodoResponseDto findTodoById(Long id);
     int updateTodo(Long id, String name, String pw, String task);
+    int deleteTodo(Long id, String pw);
 }

@@ -73,4 +73,15 @@ public class TodoServiceImpl implements TodoService {
 
         return todoRepository.findTodoById(id);
     }
+
+    // 일정 삭제
+    @Override
+    public void deleteTodo(Long id, String pw) {
+        // repository를 통해 삭제된 row(일정)의 수
+        int deleteRow = todoRepository.deleteTodo(id, pw);
+        // 삭제된 row(일정)가 0개 라면
+        if (deleteRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+        }
+    }
 }
