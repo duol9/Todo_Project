@@ -34,8 +34,10 @@ public class TodoController {
         return todoService.findAllTodos(name, editDate);
     }
 
+    // id로 선택 일정 조회
     @GetMapping("/{id}")
     public ResponseEntity<TodoResponseDto> findTodoById(@PathVariable Long id) {
         return new ResponseEntity<>(todoService.findTodoById(id), HttpStatus.OK);
     }
+
 }
