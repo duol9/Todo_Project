@@ -6,7 +6,7 @@ import com.example.todoapplication.entity.Todo;
 import java.util.List;
 
 public interface TodoRespository {
-    Todo saveTodo(Todo todo);
+    TodoResponseDto saveTodo(Todo todo);
     List<TodoResponseDto> findAllTodos();
     Todo findTodoById(Long id);
 }
