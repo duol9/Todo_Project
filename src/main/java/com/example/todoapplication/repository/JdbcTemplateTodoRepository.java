@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +94,23 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
 
     @Override
     public Todo findTodoById(Long id) {
-        return null;
+        // List<T> 형태로 반환해주는 query와 달리 단일 반환
+        return jdbcTemplate.queryForObject("SELECT * FROM todos WHERE id = ?", todoRowMapper2(), id );
+    }
+
+    private RowMapper<Todo> todoRowMapper2() {
+        return new RowMapper<Todo>() {
+            @Override
+            public Todo mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Todo(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getString("pw"),
+                        rs.getString("task"),
+                        rs.getTimestamp("createDate").toLocalDateTime(),
+                        rs.getTimestamp("editDate").toLocalDateTime()
+                );
+            }
+        };
     }
 }
