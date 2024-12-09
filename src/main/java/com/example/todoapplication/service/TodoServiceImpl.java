@@ -3,7 +3,7 @@ package com.example.todoapplication.service;
 import com.example.todoapplication.dto.TodoRequestDto;
 import com.example.todoapplication.dto.TodoResponseDto;
 import com.example.todoapplication.entity.Todo;
-import com.example.todoapplication.repository.TodoRespository;
+import com.example.todoapplication.repository.TodoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,13 +12,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoServiceImpl implements TodoService {
 
-    private final TodoRespository todoRepository;
+    private final TodoRepository todoRepository;
 
-    public TodoServiceImpl(TodoRespository todoRepository) {
+    public TodoServiceImpl(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
 
@@ -43,14 +44,14 @@ public class TodoServiceImpl implements TodoService {
     // 선택 일정 조회
     @Override
     public TodoResponseDto findTodoById(Long id) {
-        TodoResponseDto todoResponseDto = todoRepository.findTodoById(id);
+        Optional<TodoResponseDto> todoResponseDto = todoRepository.findTodoById(id);
 
         // 해당 id의 일정이 없을 경우
-        if(todoResponseDto == null) {
+        if(todoResponseDto.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exist id = " + id);
         }
 
-        return todoResponseDto;
+        return todoResponseDto.get();
     }
 
     // 일정 수정
@@ -71,7 +72,7 @@ public class TodoServiceImpl implements TodoService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data has been modified.");
         }
 
-        return todoRepository.findTodoById(id);
+        return todoRepository.findTodoById(id).get();
     }
 
     // 일정 삭제

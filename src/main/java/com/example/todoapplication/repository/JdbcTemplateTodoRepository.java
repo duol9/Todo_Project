@@ -10,13 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
-public class JdbcTemplateTodoRepository implements TodoRespository{
+public class JdbcTemplateTodoRepository implements TodoRepository{
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -25,7 +22,7 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
+    // 일정 DB에 저장
     @Override
     public TodoResponseDto saveTodo(Todo todo) {
         // Insert 쿼리 작성하지 않아도 데이터 저장 됨
@@ -45,6 +42,7 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
         return new TodoResponseDto(key.longValue(), todo.getName(), todo.getPw(), todo.getTask(), null, null);
     }
 
+    // 일정 전체 조회
     @Override
     public List<TodoResponseDto> findAllTodos(String name, LocalDate editDate) {
 
@@ -79,10 +77,12 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
         return jdbcTemplate.query(queryStringBuilder.toString(), params.toArray(), todoRowMapper());
     }
 
+    // 일정 단건 조회
     @Override
-    public TodoResponseDto findTodoById(Long id) {
-        // List<T> 형태로 반환해주는 query와 달리 단일 반환
-        return jdbcTemplate.queryForObject("SELECT * FROM todos WHERE id = ?", todoRowMapper(), id );
+    public Optional<TodoResponseDto> findTodoById(Long id) {
+        List<TodoResponseDto> result = jdbcTemplate.query("SELECT * FROM todos WHERE id = ?", todoRowMapper(), id );
+        // List를 단건 dto로 변환 후 반환
+        return result.stream().findAny();
     }
 
     //해당하는 DB의 row를 가져와 객체로 변환
@@ -129,6 +129,7 @@ public class JdbcTemplateTodoRepository implements TodoRespository{
         return jdbcTemplate.update(queryStringBuilder.toString(), params.toArray());
     }
 
+    // 일정 삭제
     @Override
     public int deleteTodo(Long id, String pw) {
         return jdbcTemplate.update("DELETE FROM todos WHERE id = ? AND pw = ?", id, pw);
