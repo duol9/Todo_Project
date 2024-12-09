@@ -2,7 +2,6 @@ package com.example.todoapplication.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -14,9 +13,7 @@ public class Todo {
     private String name;
     private String pw;
     private String task;
-    @Setter
     private LocalDateTime createDate;
-    @Setter
     private LocalDateTime editDate;
 
     public Todo(String name, String pw, String task) {
