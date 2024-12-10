@@ -17,7 +17,8 @@
 
 ## API 명세서
 
-![image](https://github.com/user-attachments/assets/850aad7d-f9d5-4fd3-aa5a-fea590df90b5)
+![image](https://github.com/user-attachments/assets/a905ce85-e31a-4fbb-91f1-5e86e5c33980)
+
 
 ## API 명세서 상세설명
 **일정 생성**
