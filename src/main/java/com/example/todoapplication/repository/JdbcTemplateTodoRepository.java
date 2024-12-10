@@ -46,7 +46,6 @@ public class JdbcTemplateTodoRepository implements TodoRepository{
     @Override
     public List<TodoResponseDto> findAllTodos(String name, LocalDate editDate) {
 
-        List<TodoResponseDto> allTodos = new ArrayList<>(); // 해당하는 일정 담을 List
         List<Object> params = new ArrayList<>(); // WHERE절에 들어갈 parameter 리스트
         StringBuilder queryStringBuilder = new StringBuilder("SELECT * FROM todos"); // 공통 쿼리문
 
@@ -97,7 +96,6 @@ public class JdbcTemplateTodoRepository implements TodoRepository{
         );
     }
 
-
     // 일정 수정 (작성자명, 할 일)
     @Override
     public int updateTodo(Long id, String name, String pw, String task) {
@@ -110,7 +108,7 @@ public class JdbcTemplateTodoRepository implements TodoRepository{
             params.add(name);
             params.add(task);
 
-        // 작성자명만 수정
+        //zsS 작성자명만 수정
         } else if (name != null && task == null) {
             queryStringBuilder.append("name = ? ");
             params.add(name);
@@ -124,7 +122,6 @@ public class JdbcTemplateTodoRepository implements TodoRepository{
         queryStringBuilder.append("WHERE id = ? AND pw = ?");
         params.add(id);
         params.add(pw);
-
 
         return jdbcTemplate.update(queryStringBuilder.toString(), params.toArray());
     }
