@@ -59,6 +59,13 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoResponseDto updateTodo(Long id, String name, String pw, String task) {
 
+        Optional<TodoResponseDto> todoResponseDto = todoRepository.findTodoById(id);
+
+        // pw가 불일치 할 경우
+        if(todoResponseDto.get().getPw() != pw) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Password mismatch");
+        }
+
         // 필수값 검증
         if (name == null && task == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name or task are required values.");
@@ -78,6 +85,12 @@ public class TodoServiceImpl implements TodoService {
     // 일정 삭제
     @Override
     public void deleteTodo(Long id, String pw) {
+        Optional<TodoResponseDto> todoResponseDto = todoRepository.findTodoById(id);
+
+        // pw가 불일치 할 경우
+        if(todoResponseDto.get().getPw() != pw) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Password mismatch");
+        }
         // repository를 통해 삭제된 row(일정)의 수
         int deleteRow = todoRepository.deleteTodo(id, pw);
         // 삭제된 row(일정)가 0개 라면
